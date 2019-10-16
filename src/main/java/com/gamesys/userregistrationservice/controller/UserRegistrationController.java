@@ -18,6 +18,6 @@ public class UserRegistrationController {
     public ResponseEntity registerUser(@RequestBody @Valid User user){
         System.out.println(user.toString());
         userRegistrationService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.OK).body("Registration Success");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Registration Success");
     }
 }
