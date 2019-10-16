@@ -1,20 +1,33 @@
 package com.gamesys.userregistrationservice.entity;
 
-import lombok.*;
+import com.gamesys.userregistrationservice.validator.Age;
+import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Entity
 @Data
 @ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
+
     @Id
+    @NotBlank(message = "Username is mandatory")
+    @Pattern(regexp = "^[A-Za-z0-9]*$")
     private String username;
-    private char[] password;
-    private Date dob;
+
+    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[0-9]).{4,}$")
+    private String password;
+
+    @Age(value=18)
+    private LocalDate dob;
+
+    //    @Pattern(regexp = "^[0-9][0-9]{14,18}$")
+    @Size(min = 15, max = 19)
     private String paymentCardNumber;
 }
