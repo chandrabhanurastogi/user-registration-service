@@ -15,7 +15,7 @@ public class UserRegistrationController {
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody User user){
         System.out.println(user.toString());
-        userRegistrationService.registerUserService(user);
+        userRegistrationService.registerUser(user);
         return ResponseEntity.status(HttpStatus.OK).body("Registration Success");
     }
 }
