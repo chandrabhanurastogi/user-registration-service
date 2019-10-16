@@ -1,7 +1,6 @@
 package com.gamesys.userregistrationservice.entity;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,8 +9,9 @@ import java.util.Date;
 @Entity
 @Data
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
-
     @Id
     private String username;
     private char[] password;
