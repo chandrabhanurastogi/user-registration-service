@@ -12,6 +12,19 @@ public class UserRegistrationService {
     private UserRegistrationRepository userRegistrationRepository;
 
     public User registerUser(User user) {
-        return userRegistrationRepository.save(user);
+
+        if (usernameUnique(user.getUsername())) {
+            user = userRegistrationRepository.save(user);
+
+        } else {
+            System.out.println("----------------- USER NAME ALREADY EXIST----------------");
+//            throw new UserNameNonUniqueException(){
+        }
+        return user;
+    }
+
+    private boolean usernameUnique(String username) {
+        return !userRegistrationRepository.findByUsername(username).isPresent();
     }
 }
+
