@@ -1,8 +1,7 @@
-package com.gamesys.userregistrationservice;
+package com.gamesys.userregistrationservice.service;
 
 import com.gamesys.userregistrationservice.entity.User;
 import com.gamesys.userregistrationservice.repository.UserRegistrationRepository;
-import com.gamesys.userregistrationservice.service.UserRegistrationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

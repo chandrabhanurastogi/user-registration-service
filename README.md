@@ -14,7 +14,7 @@ We would like you to develop a RESTful Web Service in Java. The goal of this exe
 
 ## Problem: 
 
-Develop a Registration Service that implements a ​**/register​** endpoint taking a JSON body. 
+Develop a Registration Service that implements a [**/register​**] endpoint taking a JSON body.
 
 ### Required data & validation:
 

@@ -1,11 +1,15 @@
 package com.gamesys.userregistrationservice.controller;
 
+import com.gamesys.userregistrationservice.dto.UserDto;
+import com.gamesys.userregistrationservice.service.UserRegistrationService;
 import org.hamcrest.core.Is;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 
 /**
  * Since we're only testing the web layer, we use the @WebMvcTest annotation.
@@ -24,13 +29,25 @@ import java.nio.charset.Charset;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@AutoConfigureMockMvc
 public class UserRegristrationControllerTest {
-    @Autowired
-    UserRegistrationController userRegistrationController;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    UserRegistrationService userRegistrationService;
+
+    @Before
+    public void setUp() {
+        UserDto alex = UserDto.builder()
+                .username("alex")
+                .password("Password1".toCharArray())
+                .dob(LocalDate.now().minusYears(19))
+                .paymentCardNumber("123456789123456").build();
+
+        Mockito.when(userRegistrationService.registerUser(alex))
+                .thenReturn(null);
+    }
 
     @Test
     public void whenPostRequestToUsersAndValidUser_thenCorrectRespone() throws Exception{
@@ -40,7 +57,7 @@ public class UserRegristrationControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/register")
                 .content(user)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(textPlainUtf8));
     }
 

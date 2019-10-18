@@ -2,7 +2,10 @@ package com.gamesys.userregistrationservice.dto;
 
 import com.gamesys.userregistrationservice.validator.Age;
 import com.gamesys.userregistrationservice.validator.ValidPassword;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,6 +14,9 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
 
     @NotBlank(message = "Username is mandatory")
