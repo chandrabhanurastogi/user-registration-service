@@ -1,5 +1,8 @@
 package com.gamesys.userregistrationservice.exception;
 
+import com.gamesys.userregistrationservice.exception.custom.UnderAgeException;
+import com.gamesys.userregistrationservice.exception.custom.UserNameNonUniqueException;
+import com.gamesys.userregistrationservice.exception.response.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -18,6 +21,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -43,25 +47,24 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers,
             HttpStatus status,
             WebRequest request) {
-        ApiError apiError = getReleventError(ex);
+        ApiError apiError = getRelevantError(ex);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
         return buildResponseEntity(apiError);
     }
 
-    private ApiError getReleventError(MethodArgumentNotValidException ex){
+    private ApiError getRelevantError(MethodArgumentNotValidException ex){
         HttpStatus status = BAD_REQUEST;
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 
-        if( fieldErrors.size() == 1 && fieldErrors.get(0).getDefaultMessage()
-                .equals("Must be greater than 18"))
+        if( fieldErrors.size() == 1 && Objects.equals(fieldErrors.get(0).getDefaultMessage(), "Must be greater than 18"))
             status = FORBIDDEN;
         return new ApiError(status);
     }
 
     /**
-     * Handles UnderAgeException.
+     * Handles UnderAgeException. Triggered where Age is under 18
      *
      * @param ex the EntityNotFoundException
      * @return the ApiError object
@@ -70,6 +73,18 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleUnderAgeException(
             UnderAgeException ex) {
         ApiError apiError = new ApiError(HttpStatus.FORBIDDEN);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    /**
+     * Handle UserNameNonUniqueException. Triggered when username is not unique
+     * @param ex UserNameNonUniqueException
+     * @return the ApiError Object
+     */
+    @ExceptionHandler(UserNameNonUniqueException.class)
+    protected ResponseEntity<Object> handleUserNameNonUniqueException(UserNameNonUniqueException ex){
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
@@ -124,7 +139,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
                                                                       WebRequest request) {
         ApiError apiError = new ApiError(BAD_REQUEST);
-        apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
+        apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName()));
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

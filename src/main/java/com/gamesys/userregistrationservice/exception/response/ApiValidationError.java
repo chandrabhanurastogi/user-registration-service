@@ -1,4 +1,4 @@
-package com.gamesys.userregistrationservice.exception;
+package com.gamesys.userregistrationservice.exception.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

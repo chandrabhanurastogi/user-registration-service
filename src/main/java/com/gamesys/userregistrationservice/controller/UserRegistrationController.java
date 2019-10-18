@@ -1,6 +1,6 @@
 package com.gamesys.userregistrationservice.controller;
 
-import com.gamesys.userregistrationservice.entity.User;
+import com.gamesys.userregistrationservice.dto.UserDto;
 import com.gamesys.userregistrationservice.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +13,14 @@ import javax.validation.Valid;
 
 @RestController
 public class UserRegistrationController {
-    @Autowired UserRegistrationService userRegistrationService;
-    @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody @Valid User user){
 
-        System.out.println(user.toString());
-        userRegistrationService.registerUser(user);
+    @Autowired
+    UserRegistrationService userRegistrationService;
+
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@RequestBody @Valid UserDto userDto){
+
+        userRegistrationService.registerUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registration Success");
     }
 }

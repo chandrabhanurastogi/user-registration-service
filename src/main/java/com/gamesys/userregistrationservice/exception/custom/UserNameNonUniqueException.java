@@ -1,4 +1,4 @@
-package com.gamesys.userregistrationservice.exception;
+package com.gamesys.userregistrationservice.exception.custom;
 
 import org.springframework.util.StringUtils;
 
@@ -6,10 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class UnderAgeException extends RuntimeException {
+public class UserNameNonUniqueException extends RuntimeException{
 
-    public UnderAgeException(Class clazz, String... searchParamsMap) {
-        super(UnderAgeException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
+    public UserNameNonUniqueException(String errorMessage){
+        super(errorMessage);
+    }
+
+    public UserNameNonUniqueException(Class clazz, String... searchParamsMap) {
+        super(UserNameNonUniqueException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
     }
 
     private static String generateMessage(String entity, Map<String, String> searchParams) {
