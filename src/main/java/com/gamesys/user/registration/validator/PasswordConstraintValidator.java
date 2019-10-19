@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 
-public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, char[]> {
+class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, char[]> {
    public void initialize(ValidPassword constraint) {
    }
 

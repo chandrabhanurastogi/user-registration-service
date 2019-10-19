@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class AgeValidator implements ConstraintValidator<Age, LocalDate> {
+class AgeValidator implements ConstraintValidator<Age, LocalDate> {
 
     protected long minAge;
 

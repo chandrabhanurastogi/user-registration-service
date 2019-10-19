@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PaymentIssuerRepositoryTest {
 
     @Autowired
+    private
     PaymentIssuerRepository paymentIssuerRepository;
     /**
      * The TestEntityManager provided by Spring Boot is an alternative to the standard JPA EntityManager that provides methods commonly used when writing tests.
