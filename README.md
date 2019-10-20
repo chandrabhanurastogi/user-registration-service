@@ -55,24 +55,14 @@ mvn verify
 ####Start Service with Default Profile
 Logs are appended to console when service is started with **default** profile. Using _Console-Appender_ for non prod.
 ```sh
-mvn spring-boot:run
+mvn spring-boot:run \
+-Dspring-boot.run.arguments=--iin.blocked='123456;234567;456789'
 ```
 
 ####Start Service with Prod Profile
 Logs are appended to **registration.log** file when service is started with **Prod** profile. Using _Rolling-File-Appender"_ for Prod.
 ```sh
-mvn spring-boot:run -Dspring-boot.run.profiles=foo
+mvn spring-boot:run \
+-Dspring-boot.run.profiles=prod \
+-Dspring-boot.run.arguments=--iin.blocked='123456;234567;456789'
 ```
-
-mvn spring-boot:run -Dspring-boot.run.profiles=foo
-
-
-##TODO:
-- User service test cases
-- Coverage atleast 90%
-- Initial loading of IIN numbers
-- Error messages from properties file
-- Cleanup pom.xml
-- Analyze-Inspect
-- Run with coverage
-- spring security

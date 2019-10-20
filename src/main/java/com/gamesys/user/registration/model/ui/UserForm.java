@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class UserForm {
 
     @NotBlank(message = "Username is mandatory")

@@ -61,6 +61,7 @@ public class UserFormRegistrationServiceTest {
 
 
         userRegistrationService.registerUser(UserTestUtil.buildValidUserForm());
+        thrown.expectMessage("Issuer Identification Number is blocked");
     }
 
     @Test
