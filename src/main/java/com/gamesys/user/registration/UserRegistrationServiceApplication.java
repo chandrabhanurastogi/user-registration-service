@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class UserRegistrationServiceApplication implements ApplicationRunner {
 
 	@Autowired
+	private
 	PaymentIssuerRepository paymentIssuerRepository;
 
 	public static void main(String[] args) {
@@ -27,7 +28,7 @@ public class UserRegistrationServiceApplication implements ApplicationRunner {
 	}
 
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) {
 		log.info("Application started with command-line arguments: {}", Arrays.toString(args.getSourceArgs()));
 		log.info("NonOptionArgs: {}", args.getNonOptionArgs());
 		log.info("OptionNames: {}", args.getOptionNames());

@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -67,7 +67,7 @@ public class UserFormRegistrationControllerTest {
 
     @Test
     public void whenRequestToRegisterAndUserValid_thenCorrectResponse() throws Exception {
-        MediaType textPlainUtf8 = new MediaType(MediaType.TEXT_PLAIN, Charset.forName("UTF-8"));
+        MediaType textPlainUtf8 = new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8);
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildValidUserForm()); //buildUserForm(UserTestEnum.UN_OK);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/register")

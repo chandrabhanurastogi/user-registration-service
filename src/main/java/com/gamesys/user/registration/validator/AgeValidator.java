@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 
 class AgeValidator implements ConstraintValidator<Age, LocalDate> {
 
-    protected long minAge;
+    private long minAge;
 
     @Override
     public void initialize(Age ageValue) {

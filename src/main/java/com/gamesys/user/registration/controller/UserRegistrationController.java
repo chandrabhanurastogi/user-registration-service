@@ -13,12 +13,12 @@ import javax.validation.Valid;
 
 @RestController
 @Slf4j
-public class UserRegistrationController {
+class UserRegistrationController {
 
 
-    final UserRegistrationService userRegistrationService;
+    private final UserRegistrationService userRegistrationService;
 
-    public UserRegistrationController(UserRegistrationService userRegistrationService) {
+    private UserRegistrationController(UserRegistrationService userRegistrationService) {
         this.userRegistrationService = userRegistrationService;
     }
 

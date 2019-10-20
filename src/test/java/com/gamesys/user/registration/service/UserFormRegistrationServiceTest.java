@@ -37,7 +37,7 @@ public class UserFormRegistrationServiceTest {
     private PaymentIssuerRepository paymentIssuerRepository;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    final public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void whenUsernameDuplicate_thenThrowDuplicateUserException() {

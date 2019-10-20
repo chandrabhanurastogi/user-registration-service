@@ -20,7 +20,7 @@ public enum UserTestEnum {
     PCN_NON_DIGIT("efghijklmnopqrst");
 
 
-    private String val;
+    private final String val;
 
     UserTestEnum(String value) {
         this.val = value;

@@ -28,7 +28,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @ControllerAdvice
 @Slf4j
 @Component
-public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Handle MethodArgumentNotValidException. Triggered when an object fails @Valid validation.

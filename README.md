@@ -33,10 +33,20 @@ Develop a Registration Service that implements a [**/register​**] endpoint tak
 - If the username has already been used reject the request and return HTTP Status code: 409
 - A successful registration should return HTTP Status code: 201
  
+ 
+curl -X POST (http://127.0.0.1:8080/register) -H 'Content-Type: application/json' -d '{ "username": "BobFrench", "password": "Password1", "dob": "1980-02-21", "paymentCardNumber": "349293081054422" }' 
+ 
 ### Example request: 
 ```sh
-curl -X POST \ [http://127.0.0.1:8080/register](http://127.0.0.1:8080/register)  
--H 'Content-Type: application/json' \ -d '{ "username": "BobFrench", "password": "Password1", "dob": "1980-02-21", "paymentCardNumber": "349293081054422" }' 
+curl -X POST \
+http://127.0.0.1:8080/register \
+-H 'Content-Type: application/json' \
+-d '{
+"username": "BobFrench",
+"password": "Password1",
+"dob": "1980-02-21",
+"paymentCardNumber": "349293081054422"
+}' 
 ```
 #### Optional extra: 
 On start-up allow a list of blocked payment issuer identification numbers to be provided. The issuer identification number (IIN) is the first 6 digits of the payment card’s number. If the IIN is blocked registration should fail returning HTTP Status code: 406
