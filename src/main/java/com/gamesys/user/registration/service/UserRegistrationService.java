@@ -7,7 +7,6 @@ import com.gamesys.user.registration.model.persistence.User;
 import com.gamesys.user.registration.model.ui.UserForm;
 import com.gamesys.user.registration.repository.PaymentIssuerRepository;
 import com.gamesys.user.registration.repository.UserRepository;
-import com.gamesys.user.registration.util.PasswordUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class UserRegistrationService {
      *                                       argument is already registered with another account.
      * @throws PaymentIssuerBlockedException if the IIN is blocked
      */
-    public User registerUser(UserForm userForm) {
+    public UserForm registerUser(UserForm userForm) {
         if (userNameAlreadyExist(userForm.getUsername())) {
             log.error("Username already exist. Stop Registering new user");
             //TODO: Avoid hard coding error message and read it from relevant source
@@ -43,8 +42,9 @@ public class UserRegistrationService {
             throw new PaymentIssuerBlockedException(" issuer identification number is blocked");
         } else {
             log.info("Username is unique. Registering new account");
-            return userRepository.save(mapUserFrom(userForm));
-
+            User savedUser = userRepository.save(mapUserFrom(userForm));
+            log.info("User is successfully saved with the id {}", savedUser.getId());
+            return userForm;
         }
     }
 
@@ -88,8 +88,8 @@ public class UserRegistrationService {
      * @return encoded password char []
      */
     private char[] hashString(char[] input) {
-        String salt = PasswordUtils.getSalt(30);
-        String mySecurePassword = PasswordUtils.generateSecurePassword(input, salt);
+        String salt = EncodingService.getSalt(30);
+        String mySecurePassword = EncodingService.generateSecurePassword(input, salt);
         return mySecurePassword.toCharArray();
     }
 }

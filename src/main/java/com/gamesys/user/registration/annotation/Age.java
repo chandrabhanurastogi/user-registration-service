@@ -1,4 +1,4 @@
-package com.gamesys.user.registration.validator;
+package com.gamesys.user.registration.annotation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

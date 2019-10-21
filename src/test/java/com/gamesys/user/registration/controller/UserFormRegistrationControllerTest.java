@@ -4,7 +4,6 @@ import com.gamesys.user.registration.UserTestEnum;
 import com.gamesys.user.registration.UserTestUtil;
 import com.gamesys.user.registration.exception.DuplicateUserException;
 import com.gamesys.user.registration.exception.PaymentIssuerBlockedException;
-import com.gamesys.user.registration.model.persistence.User;
 import com.gamesys.user.registration.model.ui.UserForm;
 import com.gamesys.user.registration.repository.PaymentIssuerRepository;
 import com.gamesys.user.registration.service.UserRegistrationService;
@@ -60,14 +59,18 @@ public class UserFormRegistrationControllerTest {
 
     @Before
     public void setUp() {
-        User user = User.builder().build();
+        UserForm user = UserForm.builder().build();
         Mockito.when(userRegistrationService.registerUser(any(UserForm.class)))
                 .thenReturn(user);
     }
 
+    /**
+     * Test for successful registration.
+     * Expected Status Code : 201
+     */
     @Test
     public void whenRequestToRegisterAndUserValid_thenCorrectResponse() throws Exception {
-        MediaType textPlainUtf8 = new MediaType(MediaType.TEXT_PLAIN, StandardCharsets.UTF_8);
+        MediaType textPlainUtf8 = new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8);
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildValidUserForm()); //buildUserForm(UserTestEnum.UN_OK);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/register")
@@ -75,60 +78,91 @@ public class UserFormRegistrationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType(textPlainUtf8));
-
-
     }
-
+    /**
+     * Test for USERNAME : Not Alphanumeric
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndUsernameNonAlphanumeric_thenBadRequest() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.UN_NON_ALPHANUMERIC));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for USERNAME : with space
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndUsernameWithSpace_thenBadRequest() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.UN_SPACE));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for USERNAME : blank
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndUsernameBlank_thenBadRequest() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.UN_BLANK));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for PASSWORD : Less than 4 digit
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndPasswordLessThan4Digit_thenBadRequest() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.PW_LENGTH_LESS_THAN_4));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for PASSWORD : No Upper Case
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndPasswordNoUpperCase_thenBadRequest() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.PW_NO_UPPER_CASE));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for PASSWORD : No Digit
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndPasswordNoDigit_thenBadRequest() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.PW_NO_NUMBER));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for PAYMENT-CARD-NUMBER : Less than 15 digit
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndPcnLessThan15Digit_thenBadRequest() throws Exception {
 
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.PCN_LESS_THAN_15));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
-
+    /**
+     * Test for PAYMENT-CARD-NUMBER : More than 19 digit
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndPcnMoreThan19Digit_thenBadRequest() throws Exception {
 
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.PCN_MORE_THAN_19));
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
-
+    /**
+     * Test for PAYMENT-CARD-NUMBER : Non Digit
+     * Expected Status Code : 400
+     */
     @Test
     public void whenRequestToRegisterAndPcnNonDigit_thenBadRequest() throws Exception {
 
@@ -136,18 +170,20 @@ public class UserFormRegistrationControllerTest {
         performTest(user, HttpStatus.BAD_REQUEST, validationErrorMessage);
     }
 
+    /**
+     * Test for DOB : Age less than 18
+     * Expected Status Code : 403
+     */
     @Test
     public void whenRequestToRegisterAndAgeLessThan18_thenForbidden() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.DOB_LESS_THAN_18YR));
         performTest(user, HttpStatus.FORBIDDEN, validationErrorMessage);
     }
 
-    @Test
-    public void whenRequestToRegisterAndAgLessThan18_thenForbidden() throws Exception {
-        String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.DOB_LESS_THAN_18YR));
-        performTest(user, HttpStatus.FORBIDDEN, validationErrorMessage);
-    }
-
+    /**
+     * Test for DUPLICATE USERNAME
+     * Expected Status Code : 409
+     */
     @Test
     public void whenRequestToRegisterAndUsernameAlreadyExist_thenThrowDuplicateUserException() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildValidUserForm()); //buildUserForm(UserTestEnum.UN_OK);
@@ -158,6 +194,10 @@ public class UserFormRegistrationControllerTest {
         performTest(user, HttpStatus.CONFLICT, null);
     }
 
+    /**
+     * Test for BLOCKED IIN
+     * Expected Status Code : 406
+     */
     @Test
     public void whenRequestToRegisterAndIinBlocked_thenThrowPaymentIssuerBlockedException() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildValidUserForm()); //buildUserForm(UserTestEnum.UN_OK);
@@ -168,6 +208,10 @@ public class UserFormRegistrationControllerTest {
         performTest(user, HttpStatus.NOT_ACCEPTABLE, null);
     }
 
+    /**
+     * Test for MALFORMED JSON
+     * Expected Status Code : 400
+     */
     @Test
     public void testMalformedJson() throws Exception {
         String user = UserTestUtil.getJsonOf(UserTestUtil.buildInvalidUserForm(UserTestEnum.DOB_LESS_THAN_18YR));

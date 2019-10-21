@@ -1,4 +1,4 @@
-package com.gamesys.user.registration.util;
+package com.gamesys.user.registration.service;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Base64;
 import java.util.Random;
 
 @Component
-public class PasswordUtils {
+public class EncodingService {
     private static final Random RANDOM = new SecureRandom();
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final int ITERATIONS = 10000;

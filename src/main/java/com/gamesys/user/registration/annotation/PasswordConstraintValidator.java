@@ -1,4 +1,4 @@
-package com.gamesys.user.registration.validator;
+package com.gamesys.user.registration.annotation;
 
 import org.passay.*;
 

@@ -26,6 +26,6 @@ class UserRegistrationController {
     public ResponseEntity registerUser(@RequestBody @Valid UserForm userForm) {
         log.info("Registering new user {}", userForm.getUsername());
         userRegistrationService.registerUser(userForm);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Registration Success");
+        return ResponseEntity.status(HttpStatus.CREATED).body(userForm);
     }
 }

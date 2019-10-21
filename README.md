@@ -33,12 +33,9 @@ Develop a Registration Service that implements a [**/register​**] endpoint tak
 - If the username has already been used reject the request and return HTTP Status code: 409
 - A successful registration should return HTTP Status code: 201
  
- 
-curl -X POST (http://127.0.0.1:8080/register) -H 'Content-Type: application/json' -d '{ "username": "BobFrench", "password": "Password1", "dob": "1980-02-21", "paymentCardNumber": "349293081054422" }' 
- 
 ### Example request: 
 ```sh
-curl -X POST \
+curl -V -X POST \
 http://127.0.0.1:8080/register \
 -H 'Content-Type: application/json' \
 -d '{
@@ -67,6 +64,18 @@ Logs are appended to console when service is started with **default** profile. U
 ```sh
 mvn spring-boot:run \
 -Dspring-boot.run.arguments=--iin.blocked='123456;234567;456789'
+```
+### Test Service: 
+```sh
+curl -v -X POST \
+http://127.0.0.1:8080/register \
+-H 'Content-Type: application/json' \
+-d '{
+"username": "BobFrench",
+"password": "Password1",
+"dob": "1980-02-21",
+"paymentCardNumber": "349293081054422"
+}' 
 ```
 
 ####Start Service with Prod Profile

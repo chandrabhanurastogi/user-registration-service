@@ -84,7 +84,7 @@ public class UserFormRegistrationServiceTest {
                 .findByIssuerNumberAndStatus(any(String.class),any(String.class)))
                 .thenReturn(Optional.empty());
 
-        User found = userRegistrationService.registerUser(userForm);
+        UserForm found = userRegistrationService.registerUser(userForm);
 
         assertThat(found.getUsername().equals(name));
     }

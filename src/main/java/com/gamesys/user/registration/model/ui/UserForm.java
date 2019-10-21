@@ -1,8 +1,8 @@
 package com.gamesys.user.registration.model.ui;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gamesys.user.registration.validator.Age;
-import com.gamesys.user.registration.validator.ValidPassword;
+import com.gamesys.user.registration.annotation.Age;
+import com.gamesys.user.registration.annotation.ValidPassword;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
